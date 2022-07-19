@@ -1,14 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-
-
-const NumberBoard = () => {
-
+export const ContentsBox = () => {
     return (
-        <div></div>
+        <></>
     )
 }
-
-
-export default NumberBoard;
