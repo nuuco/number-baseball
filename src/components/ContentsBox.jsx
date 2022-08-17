@@ -1,6 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
 export const ContentsBox = ({randomNum, setScoreRecord}) => {
@@ -9,6 +8,7 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
     const [result, setResult] = useState("");
     const [isHomeRun, setIsHomeRun] = useState(false);
     const [score, setScore] = useState(100);
+    const [delay, setDelay] = useState(false);
 
     const handleInput = (e) => {
         const str = e.target.value;
@@ -77,6 +77,7 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
         } else {
             setScore(prev => prev - 1);
             setErrorMsg("땡! 아쉽습니다 😅");
+            delayStart();
         }
 
     }    
@@ -97,9 +98,24 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
     const handleRestart = () => {
         const isRestart = global.confirm("재시작 하시겠습니까?");
         if(isRestart) {
-          window.location.reload(); // 이 한 줄로 초기화!
+            window.location.reload(); // 이 한 줄로 초기화!
         }
-      }
+    }
+
+    //3개 입력 완료 후 틀렸을 때 1초 지연후 input 값 리셋
+    const delayStart = () => {
+        setDelay(true);
+        let delayTime = new Promise((res) => {
+            setTimeout( function() {
+                setDelay(false);
+                res();
+              }, 1000)
+        })
+        delayTime.then(() => {
+            setInput("");
+        });
+    }
+
     
     useEffect(() => {
         if(input.length === 3) {
@@ -115,7 +131,7 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
                 <div>{input[0] || "1"}</div>
                 <div>{input[1] || "2"}</div>
                 <div>{input[2] || "3"}</div>
-                <input onChange={handleInput} value={input} disabled={isHomeRun ? true : false} />
+                <input onChange={handleInput} value={input} readOnly={isHomeRun || delay ? true : false} />
             </section>
             <p>{errorMsg}</p>
             {isHomeRun ? 
