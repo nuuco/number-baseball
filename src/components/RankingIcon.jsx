@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import shortid from "shortid";
 
 const mockupData =  [
     {
@@ -23,8 +24,32 @@ const mockupData =  [
   ];
   
 
-export const RankingIcon = ({isHomeRun}) => {
+export const RankingIcon = ({isHomeRun, score}) => {
     const [ranking, setRanking] = useState([]);
+
+    const handleSubmit = (e) => {
+
+        const newRank = {
+            "id": shortid.generate(),
+            "userId": e.target.userId.value,
+            "body": e.target.body.value,
+            "score": score,
+          };
+
+
+        fetch('http://localhost:3001/rank', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newRank)
+        }).then((res) => {
+          
+        })
+        .catch((error) => {
+          throw Error('could not post the data for that resource');
+        });
+    }
 
     useEffect(() => {
         //랭크 가져오기
@@ -49,12 +74,26 @@ export const RankingIcon = ({isHomeRun}) => {
         <>
             <button>Ranking</button>
             <section>
+                {isHomeRun && 
+                <>
+                    <p>당신의 점수는 {score}입니다</p>
+                    <form onSubmit={handleSubmit}>
+                        <label>닉네임
+                            <input name="userId" />
+                        </label>
+                        <label>comment
+                            <input name="body" />
+                        </label>
+                        <button type="submit">Submit</button>
+                    </form>
+                </>
+                }
                 <ul>
                 {ranking.map((el, idx) => (
                     <li key={el.id}>
-                        <span>{idx + 1}등</span>
+                        <span>{idx + 1}등</span> <span>{el.score}</span>
                         <div>
-                            <span>{el.userId}</span><span>{el.body}</span>
+                            <span>{el.userId}</span> : <span>{el.body}</span>
                         </div>
                     </li>
                 ))}

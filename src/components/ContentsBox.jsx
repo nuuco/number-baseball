@@ -144,7 +144,7 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
                 <div>Score : {score}</div>
             </div>
             <div className="icons">
-                <RankingIcon isHomeRun={isHomeRun} />
+                <RankingIcon isHomeRun={isHomeRun} score={score}/>
             </div>
         </>
     )
