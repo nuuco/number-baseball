@@ -31,6 +31,7 @@ function App() {
       return [num_1, num_2, num_3];
     }
     setRandomNum(createNumber());
+
   }, [])
 
   return (
