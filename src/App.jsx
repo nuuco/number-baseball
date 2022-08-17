@@ -16,6 +16,7 @@ const GlobalStyle = createGlobalStyle`
 
 function App() {
   const [randomNum, setRandomNum] = useState([]);
+  const [scoreRecord, setScoreRecord] = useState([]);
   
   useEffect(() => {
     //랜덤 숫자 3개 생성 함수
@@ -37,8 +38,8 @@ function App() {
     <div id="app">
       <GlobalStyle/>
       <main>
-        <Aside/>
-        <ContentsBox randomNum={randomNum}/>
+        <Aside scoreRecord={scoreRecord} />
+        <ContentsBox randomNum={randomNum} setScoreRecord={setScoreRecord} />
         <SoundIcon/>
       </main>
     </div>

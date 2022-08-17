@@ -2,23 +2,23 @@ import React from "react";
 import styled from "styled-components";
 import colorSheet from "../colorSheet";
 
-const AsideTitle = styled.h2`
-    
-`;
-
-const ScoreBoard = styled.ul`
+const ScoreBoard = styled.div`
 
 `;
 
 
-export const Aside = () => {
+export const Aside = ({scoreRecord}) => {
     return (
-        <aside>
-            <AsideTitle>점수 보드</AsideTitle>
-            <ScoreBoard>
-
-            </ScoreBoard>
-        </aside>
+        <ScoreBoard>
+            <h2>점수 보드</h2>
+            <section>
+                <ul>
+                {scoreRecord.map((el, idx) => (
+                    <li key={idx}>{el}</li>
+                ))}
+                </ul>
+            </section>   
+        </ScoreBoard>
     )
 }
 

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
 
-export const ContentsBox = ({randomNum}) => {
+export const ContentsBox = ({randomNum, setScoreRecord}) => {
     const [input, setInput] = useState("");
     const [errorMsg, setErrorMsg] = useState("1 - 9 사이의 숫자 키 3개를 입력하세요!");
     const [result, setResult] = useState("");
@@ -69,15 +69,30 @@ export const ContentsBox = ({randomNum}) => {
         }
 
         setResult(msg && "⚾️ " + msg);
+        updateScoreRecord(input, ballCnt, strikeCnt);
 
         if(strikeCnt === 3) {
             setIsHomeRun(true);
             setErrorMsg("🎉 정답입니다 🎉");
         } else {
-            setScore(prev => prev - 1)
+            setScore(prev => prev - 1);
             setErrorMsg("땡! 아쉽습니다 😅");
         }
+
     }    
+
+    //점수 보드 기록하는 함수
+    const updateScoreRecord = (input, ballCnt, strikeCnt) => {
+        let msg = input + " ";
+        if(ballCnt === 0 && strikeCnt === 0) {
+            msg += "❌ Out";
+        } else if (strikeCnt === 3) {
+            msg += "🎉 Win!!!!!!";
+        } else {
+            msg += `⚾ ${ballCnt === 0 ? "" : ballCnt + "B"} ${strikeCnt === 0 ? "" : strikeCnt + "S"}`;
+        }
+        setScoreRecord(prev => [...prev, msg]);
+    }
     
     useEffect(() => {
         if(input.length === 3) {
@@ -93,7 +108,7 @@ export const ContentsBox = ({randomNum}) => {
                 <div>{input[0] || "1"}</div>
                 <div>{input[1] || "2"}</div>
                 <div>{input[2] || "3"}</div>
-                <input onChange={handleInput} value={input}/>
+                <input onChange={handleInput} value={input} disabled={isHomeRun ? true : false} />
             </section>
             <p>{errorMsg}</p>
             {isHomeRun ? 
