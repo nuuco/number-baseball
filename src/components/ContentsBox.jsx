@@ -93,6 +93,13 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
         }
         setScoreRecord(prev => [...prev, msg]);
     }
+
+    const handleRestart = () => {
+        const isRestart = global.confirm("재시작 하시겠습니까?");
+        if(isRestart) {
+          window.location.reload(); // 이 한 줄로 초기화!
+        }
+      }
     
     useEffect(() => {
         if(input.length === 3) {
@@ -112,7 +119,7 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
             </section>
             <p>{errorMsg}</p>
             {isHomeRun ? 
-            <button>RESTART</button> : 
+            <button onClick={handleRestart} >RESTART</button> : 
             <p className="result">{result}</p>
             }
             <div>Score : {score}</div>
