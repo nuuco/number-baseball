@@ -3,7 +3,6 @@ import {useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 import { Aside } from "./components/Aside";
 import { ContentsBox } from "./components/ContentsBox";
-import { SoundIcon } from "./components/SoundIcon";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -38,9 +37,8 @@ function App() {
     <div id="app">
       <GlobalStyle/>
       <main>
-        <Aside scoreRecord={scoreRecord} />
+        <Aside scoreRecord={scoreRecord} setScoreRecord={setScoreRecord}  />
         <ContentsBox randomNum={randomNum} setScoreRecord={setScoreRecord} />
-        <SoundIcon/>
       </main>
     </div>
   );

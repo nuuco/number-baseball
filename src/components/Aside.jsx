@@ -7,7 +7,10 @@ const ScoreBoard = styled.div`
 `;
 
 
-export const Aside = ({scoreRecord}) => {
+export const Aside = ({scoreRecord, setScoreRecord}) => {
+    const handleClearBtn = () => {
+        setScoreRecord([]);
+    }
     return (
         <ScoreBoard>
             <h2>점수 보드</h2>
@@ -17,6 +20,7 @@ export const Aside = ({scoreRecord}) => {
                     <li key={idx}>{el}</li>
                 ))}
                 </ul>
+                <button onClick={handleClearBtn}>Clear</button>
             </section>   
         </ScoreBoard>
     )
