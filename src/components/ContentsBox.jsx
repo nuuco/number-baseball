@@ -1,6 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { SoundIcon } from "./SoundIcon";
+import { RankingIcon } from "./RankingIcon";
 
 export const ContentsBox = ({randomNum, setScoreRecord}) => {
     const [input, setInput] = useState("");
@@ -126,19 +128,24 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
 
     return (
         <>
-            <h1>숫자 야구</h1>
-            <section className="display">
-                <div>{input[0] || "1"}</div>
-                <div>{input[1] || "2"}</div>
-                <div>{input[2] || "3"}</div>
-                <input onChange={handleInput} value={input} readOnly={isHomeRun || delay ? true : false} />
-            </section>
-            <p>{errorMsg}</p>
-            {isHomeRun ? 
-            <button onClick={handleRestart} >RESTART</button> : 
-            <p className="result">{result}</p>
-            }
-            <div>Score : {score}</div>
+            <div className="contents">
+                <h1>숫자 야구</h1>
+                <section className="display">
+                    <div>{input[0] || "1"}</div>
+                    <div>{input[1] || "2"}</div>
+                    <div>{input[2] || "3"}</div>
+                    <input onChange={handleInput} value={input} readOnly={isHomeRun || delay ? true : false} />
+                </section>
+                <p>{errorMsg}</p>
+                {isHomeRun ? 
+                <button onClick={handleRestart} >RESTART</button> : 
+                <p className="result">{result}</p>
+                }
+                <div>Score : {score}</div>
+            </div>
+            <div className="icons">
+                <RankingIcon isHomeRun={isHomeRun} />
+            </div>
         </>
     )
 }
