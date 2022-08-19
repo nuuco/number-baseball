@@ -28,7 +28,7 @@ export const RankingIcon = ({isHomeRun, score}) => {
     const [ranking, setRanking] = useState([]);
 
     const handleSubmit = (e) => {
-
+        
         const newRank = {
             "id": shortid.generate(),
             "userId": e.target.userId.value,
@@ -58,13 +58,13 @@ export const RankingIcon = ({isHomeRun, score}) => {
             return res.json();
         })
         .then(data => {
-            data.sort((a, b) => b["score"] - a["score"]);
+            data.sort((a, b) => b["score"] - a["score"] || -1);
             setRanking(data);
         })
         .catch(() => {
             console.log("fetch error!");
             const rank = mockupData;
-            rank.sort((a, b) => b["score"] - a["score"]);
+            rank.sort((a, b) => b["score"] - a["score"] || -1);
             setRanking(rank);
         })
     }, [])
