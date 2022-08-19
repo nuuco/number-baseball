@@ -1,17 +1,9 @@
 import React from "react";
+import "./App.css";
 import {useEffect, useState } from "react";
-import { createGlobalStyle } from "styled-components";
 import { Aside } from "./components/Aside";
 import { ContentsBox } from "./components/ContentsBox";
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    font-size: 1rem;
-  }
-`;
 
 function App() {
   const [randomNum, setRandomNum] = useState([]);
@@ -36,7 +28,6 @@ function App() {
 
   return (
     <div id="app">
-      <GlobalStyle/>
       <main>
         <Aside scoreRecord={scoreRecord} setScoreRecord={setScoreRecord}  />
         <ContentsBox randomNum={randomNum} setScoreRecord={setScoreRecord} />
