@@ -2,4 +2,16 @@
     padding: 0;
     margin: 0;
     list-style: none;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 16px;
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+
+main {
+    padding: 30px 30px;
+    display: flex;
+    height: 100vh;
 }
