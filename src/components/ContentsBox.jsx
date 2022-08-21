@@ -52,7 +52,7 @@ h1 {
 
 .restart-btn {
     display: block;
-    width: 40%;
+    width: 140px;
     height: 40px;
     border: 2px solid ${colorSheet.mainColor};
     color: ${colorSheet.mainColor};
