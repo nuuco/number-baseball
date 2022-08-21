@@ -8,7 +8,8 @@ flex-direction: column;
 font-size: 18px;
 font-weight: 500;
 flex-basis: 20%;
-min-width: 200px;
+min-width: 190px;
+max-width: 210px;
 
     h2 {
         font-size: 16px;
