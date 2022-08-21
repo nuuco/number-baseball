@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import {useEffect, useState } from "react";
+import {useEffect, useState, useRef } from "react";
 import { Aside } from "./components/Aside";
 import { ContentsBox } from "./components/ContentsBox";
 
@@ -8,6 +8,11 @@ import { ContentsBox } from "./components/ContentsBox";
 function App() {
   const [randomNum, setRandomNum] = useState([]);
   const [scoreRecord, setScoreRecord] = useState([]);
+  const inputRef = useRef(null);
+
+  const handleInputFocus = () => {
+    inputRef.current.focus();
+}
   
   useEffect(() => {
     //랜덤 숫자 3개 생성 함수
@@ -27,10 +32,10 @@ function App() {
   }, [])
 
   return (
-    <div id="app">
+    <div id="app" onClick={handleInputFocus}>
       <main>
         <Aside scoreRecord={scoreRecord} setScoreRecord={setScoreRecord}  />
-        <ContentsBox randomNum={randomNum} setScoreRecord={setScoreRecord} />
+        <ContentsBox randomNum={randomNum} setScoreRecord={setScoreRecord} inputRef={inputRef} />
       </main>
     </div>
   );

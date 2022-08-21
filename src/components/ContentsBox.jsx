@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { SoundIcon } from "./SoundIcon";
 import styled from "styled-components";
 import colorSheet from "../colorSheet";
+import { useRef } from "react";
 
 const ContentsInner = styled.div`
 flex: 1;
@@ -14,9 +15,16 @@ align-items: center;
 h1 {
     color: ${colorSheet.mainColor};
     margin-top: auto;
+    padding-top: 20px;
     margin-bottom: 30px;
     font-size: 32px;
     font-weight: 700;
+}
+
+input {
+    height: 30px;
+    border: none;
+    opacity: 0;
 }
 
 .msg,
@@ -28,6 +36,8 @@ h1 {
 }
 
 .msg {
+    margin-bottom: 30px;
+    font-weight: 700;
     &.basic {
     color: ${colorSheet.mainColor};
     }
@@ -84,10 +94,10 @@ div {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
-    height: 100px;
+    width: 15vh;
+    height: 15vh;
     background-color: ${colorSheet.numInputBg};
-    border: 4px solid ${colorSheet.numInputBorder};
+    border: 3px solid ${colorSheet.numInputBorder};
     border-radius: 10px;
     color: ${colorSheet.numInputText};
     font-size: 44px;
@@ -119,7 +129,7 @@ const IconsBox = styled.div`
 `;
 
 
-export const ContentsBox = ({randomNum, setScoreRecord}) => {
+export const ContentsBox = ({randomNum, setScoreRecord, inputRef}) => {
     const [input, setInput] = useState("");
     const [errorMsg, setErrorMsg] = useState("1 - 9 사이의 숫자 키 3개를 입력하세요!");
     const [msgClass, setMsgClass] = useState("basic")
@@ -274,7 +284,7 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
                         <div className={inputClassName(1)}>{wrongInputIdx === 1 ? "❌" : input[1] || "2"}</div>
                         <div className={inputClassName(2)}>{wrongInputIdx === 2 ? "❌" : input[2] || "3"}</div>
                     </NumberBoxes>
-                    <input autoFocus onChange={handleInput} value={input} readOnly={isHomeRun || delay ? true : false} />
+                    <input autoFocus ref={inputRef} onChange={handleInput} value={input} readOnly={isHomeRun || delay ? true : false} />
                 </section>
                 <p className={`msg ${msgClass}`}>{errorMsg}</p>
                 {isHomeRun ? 
