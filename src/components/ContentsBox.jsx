@@ -1,19 +1,94 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import styled from "styled-components";
 import { SoundIcon } from "./SoundIcon";
 import { RankingIcon } from "./RankingIcon";
+import styled from "styled-components";
+import colorSheet from "../colorSheet";
+
+const ContentsInner = styled.div`
+flex: 1;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+
+h1 {
+    color: ${colorSheet.mainColor};
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.msg {
+    font-size: 20px;
+    font-weight: 500;
+    color: ${colorSheet.mainColor};
+}
+
+`;
+
+const NumberBoxes = styled.div`
+display: flex;
+
+div:nth-child(2) {
+    margin: 0 20px;
+}
+
+div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: ${colorSheet.numInputBg};
+    border: 4px solid ${colorSheet.numInputBorder};
+    border-radius: 10px;
+    color: ${colorSheet.numInputText};
+    font-size: 44px;
+    font-weight: 500;
+
+    &.fill {
+        background-color: ${colorSheet.mainColor};
+        border-color: ${colorSheet.mainColor};
+        color: ${colorSheet.whiteFontColor};
+    }
+
+    &.correct {
+        background-color: ${colorSheet.correctNumInputColor};
+        border-color: ${colorSheet.correctNumInputColor};
+        color: ${colorSheet.whiteFontColor};
+    }
+
+    &.incorrect {
+        background-color: ${colorSheet.incorrectNumInputColor};
+        border-color: ${colorSheet.incorrectNumInputColor};
+        color: ${colorSheet.whiteFontColor};
+    }
+}
+
+
+
+
+`;
+
+
+const IconsBox = styled.div`
+    
+`;
+
 
 export const ContentsBox = ({randomNum, setScoreRecord}) => {
     const [input, setInput] = useState("");
     const [errorMsg, setErrorMsg] = useState("1 - 9 사이의 숫자 키 3개를 입력하세요!");
     const [result, setResult] = useState("");
+    const [wrongInputIdx, setWrongInputIdx] = useState(-1);
     const [isHomeRun, setIsHomeRun] = useState(false);
     const [score, setScore] = useState(100);
     const [delay, setDelay] = useState(false);
 
     const handleInput = (e) => {
         const str = e.target.value;
+        setWrongInputIdx(-1);
 
         if(str.length <= 3 && checkInput(str)) {
             setInput(str);
@@ -35,6 +110,9 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
         }
 
         setErrorMsg(msg);
+        if(!isValid) {
+            delayWrongInput(input.length);
+        }
         return isValid;
     }
 
@@ -107,45 +185,58 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
     //3개 입력 완료 후 틀렸을 때 1초 지연후 input 값 리셋
     const delayStart = () => {
         setDelay(true);
-        let delayTime = new Promise((res) => {
-            setTimeout( function() {
-                setDelay(false);
-                res();
-              }, 1000)
-        })
-        delayTime.then(() => {
+        setTimeout(() => {
+            setDelay(false);
             setInput("");
-        });
+        }, 800);
+    }
+
+    //잘못된 입력값 입력시 X 가 잠깐 표시되게 하는 함수
+    const delayWrongInput = (idx) => {
+        setWrongInputIdx(idx);
+        setTimeout(() => {
+            setWrongInputIdx(-1);
+        }, 800);
+    }
+
+    //숫자 박스에 class 를 세팅해주는 함수
+    const inputClassName = (order) => {
+        let className = "";
+        if(input[order]) className += "fill "; 
+        if(isHomeRun) className += "correct ";
+        if(!isHomeRun && input.length === 3) className += "incorrect ";
+        return className;
     }
 
     
     useEffect(() => {
         if(input.length === 3) {
-            console.log("정답", randomNum);
             checkResult(input);
         }
     }, [input])
 
     return (
         <>
-            <div className="contents">
+            <ContentsInner>
                 <h1>숫자 야구</h1>
                 <section className="display">
-                    <div>{input[0] || "1"}</div>
-                    <div>{input[1] || "2"}</div>
-                    <div>{input[2] || "3"}</div>
-                    <input onChange={handleInput} value={input} readOnly={isHomeRun || delay ? true : false} />
+                    <NumberBoxes>
+                        <div className={inputClassName(0)}>{wrongInputIdx === 0 ? "❌" : input[0] || "1"}</div>
+                        <div className={inputClassName(1)}>{wrongInputIdx === 1 ? "❌" : input[1] || "2"}</div>
+                        <div className={inputClassName(2)}>{wrongInputIdx === 2 ? "❌" : input[2] || "3"}</div>
+                    </NumberBoxes>
+                    <input autoFocus onChange={handleInput} value={input} readOnly={isHomeRun || delay ? true : false} />
                 </section>
-                <p>{errorMsg}</p>
+                <p className="msg">{errorMsg}</p>
                 {isHomeRun ? 
                 <button onClick={handleRestart} >RESTART</button> : 
                 <p className="result">{result}</p>
                 }
                 <div>Score : {score}</div>
-            </div>
-            <div className="icons">
+            </ContentsInner>
+            <IconsBox>
                 <RankingIcon isHomeRun={isHomeRun} score={score}/>
-            </div>
+            </IconsBox>
         </>
     )
 }
