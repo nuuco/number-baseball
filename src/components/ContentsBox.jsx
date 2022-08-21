@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { SoundIcon } from "./SoundIcon";
-import { RankingIcon } from "./RankingIcon";
 import styled from "styled-components";
 import colorSheet from "../colorSheet";
 
@@ -268,7 +267,7 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
                 <p className="score">Score : {score}</p>
             </ContentsInner>
             <IconsBox>
-                <RankingIcon isHomeRun={isHomeRun} score={score}/>
+                
             </IconsBox>
         </>
     )
