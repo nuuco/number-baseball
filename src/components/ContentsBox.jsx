@@ -46,8 +46,30 @@ h1 {
 }
 
 .result {
-    height: 30px;
+    height: 40px;
 }
+
+
+.restart-btn {
+    display: block;
+    width: 40%;
+    height: 40px;
+    border: 2px solid ${colorSheet.mainColor};
+    color: ${colorSheet.mainColor};
+    background-color: ${colorSheet.whiteFontColor};
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 20px;
+
+    &:hover {
+        background-color: ${colorSheet.mainColor};
+        color: ${colorSheet.whiteFontColor};
+        border-color: ${colorSheet.mainColor};
+        box-shadow: 0 3px 3px rgba(0, 0, 0, .4);
+    }
+}
+
 
 `;
 
@@ -89,10 +111,6 @@ div {
         color: ${colorSheet.whiteFontColor};
     }
 }
-
-
-
-
 `;
 
 
@@ -218,7 +236,6 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
         setTimeout(() => {
             setDelay(false);
             setInput("");
-            setResult("");
             setMsgClass("basic");
             setErrorMsg("1 - 9 사이의 숫자 키 3개를 입력하세요!");
         }, 800);
@@ -261,7 +278,7 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
                 </section>
                 <p className={`msg ${msgClass}`}>{errorMsg}</p>
                 {isHomeRun ? 
-                <button onClick={handleRestart} >RESTART</button> : 
+                <button className="restart-btn" onClick={handleRestart} >RESTART</button> : 
                 <p className="result">{result}</p>
                 }
                 <p className="score">Score : {score}</p>
