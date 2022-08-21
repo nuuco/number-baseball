@@ -14,15 +14,40 @@ align-items: center;
 
 h1 {
     color: ${colorSheet.mainColor};
+    margin-top: auto;
     margin-bottom: 30px;
     font-size: 32px;
     font-weight: 700;
 }
 
-.msg {
+.msg,
+.result,
+.score {
     font-size: 20px;
     font-weight: 500;
+    color: ${colorSheet.blackFontColor};
+}
+
+.msg {
+    &.basic {
     color: ${colorSheet.mainColor};
+    }
+    &.wrong {
+        color: ${colorSheet.errorMsgColor};
+    }
+    &.end {
+        color: ${colorSheet.blackFontColor};
+    }
+}
+
+.score {
+    margin-top: auto;
+    margin-bottom: 30px;
+    color: ${colorSheet.scoreBoardTitle};
+}
+
+.result {
+    height: 30px;
 }
 
 `;
@@ -80,6 +105,7 @@ const IconsBox = styled.div`
 export const ContentsBox = ({randomNum, setScoreRecord}) => {
     const [input, setInput] = useState("");
     const [errorMsg, setErrorMsg] = useState("1 - 9 사이의 숫자 키 3개를 입력하세요!");
+    const [msgClass, setMsgClass] = useState("basic")
     const [result, setResult] = useState("");
     const [wrongInputIdx, setWrongInputIdx] = useState(-1);
     const [isHomeRun, setIsHomeRun] = useState(false);
@@ -112,6 +138,9 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
         setErrorMsg(msg);
         if(!isValid) {
             delayWrongInput(input.length);
+            setMsgClass("wrong");
+        } else {
+            setMsgClass("basic");
         }
         return isValid;
     }
@@ -160,6 +189,8 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
             delayStart();
         }
 
+        setMsgClass("end");
+
     }    
 
     //점수 보드 기록하는 함수
@@ -188,6 +219,9 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
         setTimeout(() => {
             setDelay(false);
             setInput("");
+            setResult("");
+            setMsgClass("basic");
+            setErrorMsg("1 - 9 사이의 숫자 키 3개를 입력하세요!");
         }, 800);
     }
 
@@ -207,7 +241,6 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
         if(!isHomeRun && input.length === 3) className += "incorrect ";
         return className;
     }
-
     
     useEffect(() => {
         if(input.length === 3) {
@@ -227,12 +260,12 @@ export const ContentsBox = ({randomNum, setScoreRecord}) => {
                     </NumberBoxes>
                     <input autoFocus onChange={handleInput} value={input} readOnly={isHomeRun || delay ? true : false} />
                 </section>
-                <p className="msg">{errorMsg}</p>
+                <p className={`msg ${msgClass}`}>{errorMsg}</p>
                 {isHomeRun ? 
                 <button onClick={handleRestart} >RESTART</button> : 
                 <p className="result">{result}</p>
                 }
-                <div>Score : {score}</div>
+                <p className="score">Score : {score}</p>
             </ContentsInner>
             <IconsBox>
                 <RankingIcon isHomeRun={isHomeRun} score={score}/>
