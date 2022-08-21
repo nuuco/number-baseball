@@ -248,7 +248,7 @@ export const ContentsBox = ({randomNum, setScoreRecord, inputRef}) => {
             setInput("");
             setMsgClass("basic");
             setErrorMsg("1 - 9 사이의 숫자 키 3개를 입력하세요!");
-        }, 800);
+        }, 1000);
     }
 
     //잘못된 입력값 입력시 X 가 잠깐 표시되게 하는 함수
