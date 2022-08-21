@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useState, useEffect } from "react";
 import { SoundIcon } from "./SoundIcon";
 import styled from "styled-components";
 import colorSheet from "../colorSheet";
-import { useRef } from "react";
 
 const ContentsInner = styled.div`
 flex: 1;
@@ -172,8 +171,28 @@ export const ContentsBox = ({randomNum, setScoreRecord, inputRef}) => {
         return isValid;
     }
 
-    //결과값(볼 스트라이크 수) 만들어주는 메소드
-    const checkResult = (input) => {
+    //점수 보드 기록하는 함수
+    const updateScoreRecord = useCallback((input, ballCnt, strikeCnt) => {
+        let msg = input + " ";
+        if(ballCnt === 0 && strikeCnt === 0) {
+            msg += "❌ Out";
+        } else if (strikeCnt === 3) {
+            msg += "🎉 Win!!!!!!";
+        } else {
+            msg += `⚾ ${ballCnt === 0 ? "" : ballCnt + "B"} ${strikeCnt === 0 ? "" : strikeCnt + "S"}`;
+        }
+        setScoreRecord(prev => [...prev, msg]);
+    }, [setScoreRecord]);
+
+    const handleRestart = () => {
+        const isRestart = global.confirm("재시작 하시겠습니까?");
+        if(isRestart) {
+            window.location.reload(); // 이 한 줄로 초기화!
+        }
+    }
+
+     //결과값(볼 스트라이크 수) 만들어주는 메소드
+     const checkResult = useCallback((input) => {
         const numArr = input.split("").map(el => Number(el));
         let strikeCnt = 0;
         let ballCnt = 0;
@@ -218,27 +237,7 @@ export const ContentsBox = ({randomNum, setScoreRecord, inputRef}) => {
 
         setMsgClass("end");
 
-    }    
-
-    //점수 보드 기록하는 함수
-    const updateScoreRecord = (input, ballCnt, strikeCnt) => {
-        let msg = input + " ";
-        if(ballCnt === 0 && strikeCnt === 0) {
-            msg += "❌ Out";
-        } else if (strikeCnt === 3) {
-            msg += "🎉 Win!!!!!!";
-        } else {
-            msg += `⚾ ${ballCnt === 0 ? "" : ballCnt + "B"} ${strikeCnt === 0 ? "" : strikeCnt + "S"}`;
-        }
-        setScoreRecord(prev => [...prev, msg]);
-    }
-
-    const handleRestart = () => {
-        const isRestart = global.confirm("재시작 하시겠습니까?");
-        if(isRestart) {
-            window.location.reload(); // 이 한 줄로 초기화!
-        }
-    }
+    }, [randomNum, updateScoreRecord]);
 
     //3개 입력 완료 후 틀렸을 때 1초 지연후 input 값 리셋
     const delayStart = () => {
@@ -272,7 +271,7 @@ export const ContentsBox = ({randomNum, setScoreRecord, inputRef}) => {
         if(input.length === 3) {
             checkResult(input);
         }
-    }, [input])
+    }, [input, checkResult])
 
     return (
         <>
@@ -294,7 +293,7 @@ export const ContentsBox = ({randomNum, setScoreRecord, inputRef}) => {
                 <p className="score">Score : {score}</p>
             </ContentsInner>
             <IconsBox>
-                
+                <SoundIcon/>
             </IconsBox>
         </>
     )
