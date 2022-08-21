@@ -1,4 +1,6 @@
 # ⚾️ 숫자 야구 게임
+👉 [숫자 야구 배포 링크](https://number-baseball-by-nuuco.netlify.app/)
+
 ## 🛠 기능 구현 체크리스트
 - [x] 랜덤 숫자 3개 생성하기
 - [x] 숫자 야구 로직 구현하기
