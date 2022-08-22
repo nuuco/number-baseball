@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { SoundIcon } from "./SoundIcon";
 import styled from "styled-components";
 import colorSheet from "../colorSheet";
+import confetti from "canvas-confetti";
 
 const ContentsInner = styled.div`
 flex: 1;
@@ -229,6 +230,7 @@ export const ContentsBox = ({randomNum, setScoreRecord, inputRef}) => {
         if(strikeCnt === 3) {
             setIsHomeRun(true);
             setErrorMsg("🎉 정답입니다 🎉");
+            runConfetti();
         } else {
             setScore(prev => prev - 1);
             setErrorMsg("땡! 아쉽습니다 😅");
@@ -266,6 +268,18 @@ export const ContentsBox = ({randomNum, setScoreRecord, inputRef}) => {
         if(!isHomeRun && input.length === 3) className += "incorrect ";
         return className;
     }
+
+    const runConfetti = () => {
+        confetti({
+            particleCount: 30,
+            spread: 120,
+            origin: { x: 0.6, y: 0.4 }
+        });
+    }
+
+    const handleConfetti = () => {
+        if(isHomeRun) runConfetti();
+    }
     
     useEffect(() => {
         if(input.length === 3) {
@@ -275,7 +289,7 @@ export const ContentsBox = ({randomNum, setScoreRecord, inputRef}) => {
 
     return (
         <>
-            <ContentsInner>
+            <ContentsInner onClick={handleConfetti}>
                 <h1>숫자 야구</h1>
                 <section className="display">
                     <NumberBoxes>
